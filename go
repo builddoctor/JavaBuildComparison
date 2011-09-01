@@ -2,3 +2,4 @@
 time ant clean packaged-code
 time mvn clean install
 time gradle clean build
+time Rake clean package
