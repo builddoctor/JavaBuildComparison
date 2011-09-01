@@ -1,0 +1,17 @@
+<project name="willy" default="compiled-code">
+
+  <target name="clean">
+    <delete dir="target"/>
+  </target>
+
+  <target name="compiled-code">
+    <mkdir dir="target/classes" />
+    <javac srcdir="src/main/java" destdir="target/classes"/>
+  </target>
+
+  <target name="packaged-code" depends="compiled-code">
+    <jar destfile="target/willy.jar" basedir="target/classes"/>
+  </target>
+
+
+</project>
