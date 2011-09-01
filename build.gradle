@@ -1,1 +1,1 @@
-include 'java'
+apply plugin: 'java'
