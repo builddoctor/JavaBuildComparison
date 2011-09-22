@@ -1,4 +1,4 @@
-<project name="willy" default="compiled-code">
+<project name="willy" default="tested-code">
 
   <target name="clean">
     <delete dir="target"/>
@@ -6,7 +6,27 @@
 
   <target name="compiled-code">
     <mkdir dir="target/classes" />
-    <javac srcdir="src/main/java" destdir="target/classes"/>
+    <javac srcdir="src/main/java" destdir="target/classes" includeantruntime="false"/>
+  </target>
+
+  <target name="compiled-test-code" depends="compiled-code">
+    <mkdir dir="target/test-classes" />
+    <javac srcdir="src/test/java" destdir="target/test-classes" includeantruntime="false"/>
+  </target>
+
+  <target name="tested-code" depends="compiled-test-code">
+    <mkdir dir="target/test-results" />
+    <junit>
+      <batchtest todir="target/test-results">
+        <fileset dir="target/test-classes" />
+      </batchtest>
+      <formatter type="plain" />
+      <classpath>
+        <pathelement path="target/classes"/>
+        <pathelement path="target/test-classes"/>
+        <pathelement path="lib/junit-4.9.jar"/>
+      </classpath>
+    </junit>
   </target>
 
   <target name="packaged-code" depends="compiled-code">
