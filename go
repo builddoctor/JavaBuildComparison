@@ -39,7 +39,7 @@ def render
 end
 
 collect('ant', 'ant -version', 'ant clean packaged-code')
-collect('maven', 'mvn -version', 'mvn clean install')
+collect('maven', 'mvn -version', 'mvn clean package')
 collect('gradle', 'gradle -version', 'gradle clean build')
 collect('rake', 'rake -V', 'rake clean package')
 collect('buildr', 'bundle exec buildr -v', 'bundle exec buildr clean package')
