@@ -1,36 +1,48 @@
-<project name="willy" default="tested-code">
+<project name="willy" default="packaged-code">
+  <property name="build.dir" location="target"/>
+  <property name="main.sources" location="src/main/java" />
+  <property name="test.sources" location="src/test/java" />
+  <property name="main.classes" location="${build.dir}/classes" />
+  <property name="test.classes" location="${build.dir}/test-classes" />
+  <property name="test.results" location="${build.dir}/test-results" />
+
+  <path id="classpath">
+    <pathelement path="${main.classes}"/>
+    <pathelement path="${test.classes}"/>
+    <pathelement path="lib/junit-4.9.jar"/>
+  </path>
 
   <target name="clean">
-    <delete dir="target"/>
+    <delete dir="${build.dir}"/>
   </target>
 
   <target name="compiled-code">
-    <mkdir dir="target/classes" />
-    <javac srcdir="src/main/java" destdir="target/classes" includeantruntime="false"/>
+    <mkdir dir="${main.classes}" />
+    <javac srcdir="${main.sources}"
+      destdir="${main.classes}"
+      includeantruntime="false"/>
   </target>
 
   <target name="compiled-test-code" depends="compiled-code">
-    <mkdir dir="target/test-classes" />
-    <javac srcdir="src/test/java" destdir="target/test-classes" includeantruntime="false"/>
+    <mkdir dir="${test.classes}" />
+    <javac srcdir="${test.sources}"
+    destdir="${test.classes}"
+    includeantruntime="false" classpathref="classpath"/>
   </target>
 
   <target name="tested-code" depends="compiled-test-code">
-    <mkdir dir="target/test-results" />
+    <mkdir dir="${test.results}" />
     <junit>
-      <batchtest todir="target/test-results">
-        <fileset dir="target/test-classes" />
+      <batchtest todir="${test.results}">
+        <fileset dir="${test.classes}" />
       </batchtest>
       <formatter type="plain" />
-      <classpath>
-        <pathelement path="target/classes"/>
-        <pathelement path="target/test-classes"/>
-        <pathelement path="lib/junit-4.9.jar"/>
-      </classpath>
+    <classpath refid="classpath" />
     </junit>
   </target>
 
-  <target name="packaged-code" depends="compiled-code">
-    <jar destfile="target/willy.jar" basedir="target/classes"/>
+  <target name="packaged-code" depends="tested-code">
+    <jar destfile="${build.dir}/willy.jar" basedir="${main.classes}"/>
   </target>
 
 
