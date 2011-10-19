@@ -2,32 +2,20 @@
 require 'open3'
 @results = {}
 
-def collect(name, version_cmd, test_cmd)
+def collect(name, version_cmd, filter, test_cmd)
   @results[name] = {}
-  @results[name]['version'] = `#{version_cmd}`
+  @results[name]['version'] = `#{version_cmd} | grep #{filter}`
   command = "time #{test_cmd}"
   stdin, stdout, stderr = Open3.popen3(command)
-  puts name
-  puts stdout.gets
-  @results[name]['time'] = stderr.gets
-end
-
-def stars(count, eol)
-  count.times { putc '*' }
-  puts if eol
+  output = stderr.read.to_a
+  last =  output.last
+  @results[name]['stdout'] = stdout.read
+  @results[name]['time'] = last
 end
 
 def header(message)
-  length = 80
-  padding = ((length - message.length) / 2) - 1
-  stars(length, true)
-  stars(padding, false)
-  putc '  '
-  putc ' ' if message.length.odd?
   print message.upcase
-  putc '  '
-  stars(padding, true)
-  stars(length, true)
+  puts ":"
 end
 
 def render
@@ -38,9 +26,11 @@ def render
   end
 end
 
-collect('ant', 'ant -version', 'ant clean packaged-code')
-collect('maven', 'mvn -version', 'mvn clean package')
-collect('gradle', 'gradle -version', 'gradle clean build')
-collect('rake', 'rake -V', 'rake clean package')
-collect('buildr', 'bundle exec buildr -v', 'bundle exec buildr clean package')
+collect('ant', 'ant -version', "Apache.Ant", 'ant clean packaged-code')
+collect('maven', 'mvn -version', "Apache.Maven", 'mvn clean package')
+collect('gradle', 'gradle -version', "Gradle.1", 'gradle clean build')
+collect('rake', 'rake -V', "rake", 'rake clean package')
+collect('buildr', 'bundle exec buildr -V', 'Buildr', 'bundle exec buildr clean package')
+collect('make', 'make -v', 'GNU', 'make clean src/main/java/com/builddoctor/HelloWorld.class')
+
 render
