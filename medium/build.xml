@@ -1,0 +1,50 @@
+<project name="willy" default="packaged-code">
+  <property name="build.dir" location="target"/>
+  <property name="main.sources" location="src/cruisecontrol/java" />
+  <property name="test.sources" location="src/cruisecontrolTest/java" />
+  <property name="main.classes" location="${build.dir}/classes" />
+  <property name="test.classes" location="${build.dir}/test-classes" />
+  <property name="test.results" location="${build.dir}/test-results" />
+
+  <path id="classpath">
+    <pathelement path="${main.classes}"/>
+    <pathelement path="${test.classes}"/>
+    <fileset dir="lib" includes="**/*.jar" />
+  </path>
+
+  <target name="clean">
+    <delete dir="${build.dir}"/>
+  </target>
+
+  <target name="compiled-code">
+    <mkdir dir="${main.classes}" />
+    <javac srcdir="${main.sources}"
+      classpathref="classpath"
+      destdir="${main.classes}"
+      includeantruntime="false"/>
+  </target>
+
+  <target name="compiled-test-code" depends="compiled-code">
+    <mkdir dir="${test.classes}" />
+    <javac srcdir="${test.sources}"
+    destdir="${test.classes}"
+    includeantruntime="false" classpathref="classpath"/>
+  </target>
+
+  <target name="tested-code" depends="compiled-test-code">
+    <mkdir dir="${test.results}" />
+    <junit>
+      <batchtest todir="${test.results}">
+        <fileset dir="${test.classes}" />
+      </batchtest>
+      <formatter type="plain" />
+    <classpath refid="classpath" />
+    </junit>
+  </target>
+
+  <target name="packaged-code" depends="tested-code">
+    <jar destfile="${build.dir}/willy.jar" basedir="${main.classes}"/>
+  </target>
+
+
+</project>
