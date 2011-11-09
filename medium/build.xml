@@ -1,7 +1,7 @@
 <project name="willy" default="packaged-code">
   <property name="build.dir" location="target"/>
-  <property name="main.sources" location="src/cruisecontrol/java" />
-  <property name="test.sources" location="src/cruisecontrolTest/java" />
+  <property name="main.sources" location="src/main/java" />
+  <property name="test.sources" location="src/test/java" />
   <property name="main.classes" location="${build.dir}/classes" />
   <property name="test.classes" location="${build.dir}/test-classes" />
   <property name="test.results" location="${build.dir}/test-results" />
