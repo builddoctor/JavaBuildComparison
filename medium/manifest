@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+die() { 
+  echo $1
+  exit 1
+}
+MANIFEST='META-INF/MANIFEST.MF'
+jar=$1
+
+[ -f "${jar}" ] || die "file not found: ${jar}"
+jar -xf ${jar} ${MANIFEST}
+cat ${MANIFEST}
+rm ${MANIFEST}
