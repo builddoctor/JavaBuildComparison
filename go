@@ -5,12 +5,14 @@ require 'open3'
 def collect(name, version_cmd, filter, test_cmd)
   @results[name] = {}
   @results[name]['version'] = `#{version_cmd} | grep #{filter}`
-  command = "time #{test_cmd}"
+  start_time = Time.now
+  command = "#{test_cmd}"
   stdin, stdout, stderr = Open3.popen3(command)
   output = stderr.read.to_a
   last =  output.last
+  finish_time = Time.now
   @results[name]['stdout'] = stdout.read
-  @results[name]['time'] = last
+  @results[name]['time'] = finish_time - start_time
 end
 
 def header(message)
@@ -19,10 +21,12 @@ def header(message)
 end
 
 def render
-  @results.each_key do |key|
-    header key
-    puts @results[key]['version']
-    puts @results[key]['time']
+  sorted = @results.sort_by { |k,v| v['time'] }
+  sorted.each do |a|
+    header a[0]
+    info = a[1]
+      puts info['version']
+      puts info['time']
   end
 end
 

@@ -2,3 +2,6 @@ target
 build
 *.swp
 .gradle
+classes.list
+willy.jar
+reports
