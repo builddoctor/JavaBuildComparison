@@ -6,7 +6,7 @@ def collect(name, version_cmd, filter, test_cmd)
   @results[name] = {}
   @results[name]['version'] = `#{version_cmd} | grep #{filter}`
   start_time = Time.now
-  command = "#{test_cmd}"
+  command = "(cd small && #{test_cmd})"
   stdin, stdout, stderr = Open3.popen3(command)
   output = stderr.read.to_a
   last =  output.last
