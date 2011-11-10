@@ -22,3 +22,7 @@ EOF
 install org.masukomi aspirin 0.8.3 lib/aspirin-0.8.3.jar
 install org.safehaus.jug jug 2.0.0 lib/jug-lgpl-2.0.0.jar
 install org.sfee inmemorysfee 1.0.1 lib/inmemorysfee-1.0.1.jar
+install com.jpeterson x10 0.1 lib/x10.jar
+install net.sf.cruisecontrol antlogger 0.1 lib/cruisecontrol-antprogresslogger.jar 
+install org.jtf fast-md5 20050714 lib/fast-md5.jar
+#install javax.comm comm 2.0.3  lib/comm.jar
